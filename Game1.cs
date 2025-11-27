@@ -46,31 +46,55 @@ namespace MonoGame_Summative___Breakout
             {
                 for (int y = 25; y < window.Height / 2; y += 20)
                 {
-                    if (y - 50 < 0)
+                    if (y - 50 < -20)
                     {
                         brickColor = Color.Purple;
                     }
+                    else if (y - 50 < 0)
+                    {
+                        brickColor = Color.Indigo;
+                    }
+                    else if (y - 50 < 20)
+                    {
+                        brickColor = Color.DarkBlue;
+                    }
                     else if (y - 50 < 40)
                     {
-                        brickColor = Color.Blue;
+                        brickColor = Color.RoyalBlue;
+                    }
+                    else if (y - 50 < 60)
+                    {
+                        brickColor = Color.Teal;
                     }
                     else if (y - 50 < 80)
                     {
-                        brickColor = Color.Green;
+                        brickColor = Color.LimeGreen;
+                    }
+                    else if (y - 50 < 100)
+                    {
+                        brickColor = Color.YellowGreen;
                     }
                     else if (y - 50 < 120)
                     {
                         brickColor = Color.Yellow;
                     }
+                    else if (y - 50 < 140)
+                    {
+                        brickColor = Color.Gold;
+                    }
                     else if (y - 50 < 160)
                     {
                         brickColor = Color.Orange;
+                    }
+                    else if (y - 50 < 180)
+                    {
+                        brickColor = Color.OrangeRed;
                     }
                     else
                     {
                         brickColor= Color.Red;
                     }
-                        blocks.Add(new Block(blockTexture, new Rectangle(x, y, 40, 15), brickColor));
+                    blocks.Add(new Block(blockTexture, new Rectangle(x, y, 40, 15), brickColor));
                 }
             }
         }
@@ -97,7 +121,7 @@ namespace MonoGame_Summative___Breakout
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
             _spriteBatch.Begin();
             for (int i = 0; i < blocks.Count; i++)
             {
