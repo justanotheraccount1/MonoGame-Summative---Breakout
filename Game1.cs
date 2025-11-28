@@ -23,6 +23,8 @@ namespace MonoGame_Summative___Breakout
         Texture2D blockTexture, paddleTexture, ballTexture, titleScreen;
         Rectangle window;
         List<Block> blocks = new List<Block>();
+        Ball ball;
+        Paddle paddle;
 
         public Game1()
         {
@@ -46,57 +48,12 @@ namespace MonoGame_Summative___Breakout
             {
                 for (int y = 25; y < window.Height / 2; y += 20)
                 {
-                    if (y - 50 < -20)
-                    {
-                        brickColor = Color.Purple;
-                    }
-                    else if (y - 50 < 0)
-                    {
-                        brickColor = Color.Indigo;
-                    }
-                    else if (y - 50 < 20)
-                    {
-                        brickColor = Color.DarkBlue;
-                    }
-                    else if (y - 50 < 40)
-                    {
-                        brickColor = Color.RoyalBlue;
-                    }
-                    else if (y - 50 < 60)
-                    {
-                        brickColor = Color.Teal;
-                    }
-                    else if (y - 50 < 80)
-                    {
-                        brickColor = Color.LimeGreen;
-                    }
-                    else if (y - 50 < 100)
-                    {
-                        brickColor = Color.YellowGreen;
-                    }
-                    else if (y - 50 < 120)
-                    {
-                        brickColor = Color.Yellow;
-                    }
-                    else if (y - 50 < 140)
-                    {
-                        brickColor = Color.Gold;
-                    }
-                    else if (y - 50 < 160)
-                    {
-                        brickColor = Color.Orange;
-                    }
-                    else if (y - 50 < 180)
-                    {
-                        brickColor = Color.OrangeRed;
-                    }
-                    else
-                    {
-                        brickColor= Color.Red;
-                    }
-                    blocks.Add(new Block(blockTexture, new Rectangle(x, y, 40, 15), brickColor));
+                    
+                    blocks.Add(new Block(blockTexture, new Rectangle(x, y, 40, 15)));
                 }
             }
+            ball = new Ball(ballTexture, new Rectangle(390, 240, 20, 20));
+            paddle = new Paddle(paddleTexture, new Rectangle(450, 480, 100, 10));
         }
 
         protected override void LoadContent()
@@ -113,7 +70,9 @@ namespace MonoGame_Summative___Breakout
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
+            keyboardState = Keyboard.GetState();
+            ball.Update(window);
+            paddle.Update(keyboardState, window);
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -127,6 +86,8 @@ namespace MonoGame_Summative___Breakout
             {
                 blocks[i].Draw(_spriteBatch);
             }
+            paddle.Draw(_spriteBatch);
+            ball.Draw(_spriteBatch);
             _spriteBatch.End();
             // TODO: Add your drawing code here
 

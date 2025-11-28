@@ -14,12 +14,12 @@ namespace MonoGame_Summative___Breakout
         private Rectangle _location;
         private Vector2 _speed;
         private Random generator, xDirection, yDirection;
+        private bool start = false;
 
-        public Ball(Texture2D texture, Rectangle location, Vector2 speed)
+        public Ball(Texture2D texture, Rectangle location)
         {
             _texture = texture;
             _location = location;
-            _speed = speed;
             generator = new Random();
             xDirection = new Random();
             yDirection = new Random();
@@ -30,31 +30,54 @@ namespace MonoGame_Summative___Breakout
             spriteBatch.Draw(_texture, _location, Color.White);
         }
 
-        public void Update()
+        public void Update(Rectangle window)
         {
-            if (xDirection.Next(2)  == 0)
+            if (xDirection.Next(2)  == 0 && !start)
             {
                 if (yDirection.Next(2) == 0)
                 {
-                    _speed = new Vector2(-2, -2);
+                    _speed = new Vector2(-3, -3);
+                    start = true;
                 }
                 else
                 {
-                    _speed = new Vector2(-2, 2);
+                    _speed = new Vector2(-3, 3);
+                    start = true;
                 }
             }
-            else
+            else if (xDirection.Next(2) == 1 && !start)
             {
                 if (yDirection.Next(2) == 0)
                 {
-                    _speed = new Vector2(2, -2);
+                    _speed = new Vector2(3, -3);
+                    start = true;
                 }
                 else
                 {
-                    _speed = new Vector2(2, 2);
+                    _speed = new Vector2(3, 3);
+                    start = true;
                 }
             }
-
+            if (_location.X <= window.X)
+            {
+                _location.X = 0;
+                _speed.X *= -1;
+            }
+            if (_location.X + _location.Width >= window.Width)
+            {
+                _location.X = window.Width - _location.Width;
+                _speed.X *= -1;
+            }
+            if (_location.Y <= window.Y)
+            {
+                _location.Y = 0;
+                _speed.Y *= -1;
+            }
+            if (_location.Y + _location.Height >= window.Height)
+            {
+                _location.Y = window.Height - _location.Height;
+                _speed.Y *= -1;
+            }
             _location.Offset(_speed);
         }
     }
