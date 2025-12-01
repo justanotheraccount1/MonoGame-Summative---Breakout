@@ -71,8 +71,10 @@ namespace MonoGame_Summative___Breakout
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             keyboardState = Keyboard.GetState();
-            ball.Update(window);
+            ball.Update(window, blocks, paddle);
             paddle.Update(keyboardState, window);
+
+
             // TODO: Add your update logic here
 
             base.Update(gameTime);

@@ -30,18 +30,18 @@ namespace MonoGame_Summative___Breakout
             spriteBatch.Draw(_texture, _location, Color.White);
         }
 
-        public void Update(Rectangle window)
+        public void Update(Rectangle window, List<Block> blocks, Paddle paddle)
         {
             if (xDirection.Next(2)  == 0 && !start)
             {
                 if (yDirection.Next(2) == 0)
                 {
-                    _speed = new Vector2(-3, -3);
+                    _speed = new Vector2(-2, -4);
                     start = true;
                 }
                 else
                 {
-                    _speed = new Vector2(-3, 3);
+                    _speed = new Vector2(-2, 4);
                     start = true;
                 }
             }
@@ -49,12 +49,12 @@ namespace MonoGame_Summative___Breakout
             {
                 if (yDirection.Next(2) == 0)
                 {
-                    _speed = new Vector2(3, -3);
+                    _speed = new Vector2(2, -4);
                     start = true;
                 }
                 else
                 {
-                    _speed = new Vector2(3, 3);
+                    _speed = new Vector2(2, 4);
                     start = true;
                 }
             }
@@ -78,7 +78,25 @@ namespace MonoGame_Summative___Breakout
                 _location.Y = window.Height - _location.Height;
                 _speed.Y *= -1;
             }
-            _location.Offset(_speed);
+            _location.X += (int)_speed.X;
+            bool hit = false;
+            for (int i = 0; i < blocks.Count; i++)
+            {
+                if (blocks[i].Contains(_location))
+                {
+                    hit = true;
+                    blocks.RemoveAt(i);
+                    i--;
+                }
+            }
+            if (hit)
+            {
+                _speed.X *= -1;
+            }
+
+
+
+
         }
     }
 }
