@@ -78,9 +78,9 @@ namespace MonoGame_Summative___Breakout
         {
             spriteBatch.Draw(_texture, _location, _color);
         }
-        public bool Contains(Rectangle ball)
+        public bool Intersects(Rectangle ball)
         {
-            return _location.Contains(ball);
+            return _location.Intersects(ball);
         }
 
         //public Color BrickColor

@@ -47,6 +47,10 @@ namespace MonoGame_Summative___Breakout
             }
             _location.Offset(_speed);
         }
+        public bool Intersects(Rectangle ball)
+        {
+            return _location.Intersects(ball);
+        }
     }
 
 }

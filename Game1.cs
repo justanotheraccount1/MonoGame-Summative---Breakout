@@ -52,7 +52,7 @@ namespace MonoGame_Summative___Breakout
                     blocks.Add(new Block(blockTexture, new Rectangle(x, y, 40, 15)));
                 }
             }
-            ball = new Ball(ballTexture, new Rectangle(390, 240, 20, 20));
+            ball = new Ball(ballTexture, new Rectangle(390, 340, 20, 20));
             paddle = new Paddle(paddleTexture, new Rectangle(450, 480, 100, 10));
         }
 
@@ -71,7 +71,7 @@ namespace MonoGame_Summative___Breakout
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             keyboardState = Keyboard.GetState();
-            ball.Update(window, blocks, paddle);
+            ball.Update(window, blocks, paddle, gameTime);
             paddle.Update(keyboardState, window);
 
 

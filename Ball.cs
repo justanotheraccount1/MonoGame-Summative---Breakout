@@ -13,16 +13,17 @@ namespace MonoGame_Summative___Breakout
         private Texture2D _texture;
         private Rectangle _location;
         private Vector2 _speed;
-        private Random generator, xDirection, yDirection;
+        private Random xDirection, yDirection;
         private bool start = false;
+        private float _seconds;
 
         public Ball(Texture2D texture, Rectangle location)
         {
             _texture = texture;
             _location = location;
-            generator = new Random();
             xDirection = new Random();
             yDirection = new Random();
+            _seconds = 0;
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -30,18 +31,19 @@ namespace MonoGame_Summative___Breakout
             spriteBatch.Draw(_texture, _location, Color.White);
         }
 
-        public void Update(Rectangle window, List<Block> blocks, Paddle paddle)
+        public void Update(Rectangle window, List<Block> blocks, Paddle paddle, GameTime gameTime)
         {
+            _seconds += (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (xDirection.Next(2)  == 0 && !start)
             {
                 if (yDirection.Next(2) == 0)
                 {
-                    _speed = new Vector2(-2, -4);
+                    _speed = new Vector2(-1, -2);
                     start = true;
                 }
                 else
                 {
-                    _speed = new Vector2(-2, 4);
+                    _speed = new Vector2(-1, 2);
                     start = true;
                 }
             }
@@ -49,15 +51,59 @@ namespace MonoGame_Summative___Breakout
             {
                 if (yDirection.Next(2) == 0)
                 {
-                    _speed = new Vector2(2, -4);
+                    _speed = new Vector2(1, -2);
                     start = true;
                 }
                 else
                 {
-                    _speed = new Vector2(2, 4);
+                    _speed = new Vector2(1, 2);
                     start = true;
                 }
             }
+
+            _location.X += (int)_speed.X;
+            bool hitX = false;
+            for (int i = 0; i < blocks.Count; i++)
+            {
+                if (blocks[i].Intersects(_location))
+                {
+                    hitX = true;
+                    blocks.RemoveAt(i);
+                    i--;
+                }
+            }
+            if (paddle.Intersects(_location))
+            {
+                hitX = true;
+            }
+            if (hitX)
+            {
+                _speed.X *= -1;
+                hitX = false;
+            }
+            _location.X += (int)_speed.X;
+            bool hitY = false;
+            _location.Y += (int)_speed.Y;
+            for (int i = 0; i < blocks.Count; i++)
+            {
+                if (blocks[i].Intersects(_location))
+                {
+                    hitY = true;
+                    blocks.RemoveAt(i);
+                    i--;
+                }
+            }
+            if (paddle.Intersects(_location))
+            {
+                hitY = true;
+            }
+            if (hitY)
+            {
+                _speed.Y *= -1;
+                hitY = false;
+            }
+            _location.Y += (int)_speed.Y;
+
             if (_location.X <= window.X)
             {
                 _location.X = 0;
@@ -78,25 +124,8 @@ namespace MonoGame_Summative___Breakout
                 _location.Y = window.Height - _location.Height;
                 _speed.Y *= -1;
             }
-            _location.X += (int)_speed.X;
-            bool hit = false;
-            for (int i = 0; i < blocks.Count; i++)
-            {
-                if (blocks[i].Contains(_location))
-                {
-                    hit = true;
-                    blocks.RemoveAt(i);
-                    i--;
-                }
-            }
-            if (hit)
-            {
-                _speed.X *= -1;
-            }
 
-
-
-
+           
         }
     }
 }
