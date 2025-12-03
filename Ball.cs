@@ -82,6 +82,8 @@ namespace MonoGame_Summative___Breakout
                 hitX = false;
             }
             _location.X += (int)_speed.X;
+
+
             bool hitY = false;
             _location.Y += (int)_speed.Y;
             for (int i = 0; i < blocks.Count; i++)
