@@ -38,12 +38,12 @@ namespace MonoGame_Summative___Breakout
             {
                 if (yDirection.Next(2) == 0)
                 {
-                    _speed = new Vector2(-1, -2);
+                    _speed = new Vector2(-4, -2);
                     start = true;
                 }
                 else
                 {
-                    _speed = new Vector2(-1, 2);
+                    _speed = new Vector2(-4, 2);
                     start = true;
                 }
             }
@@ -51,12 +51,12 @@ namespace MonoGame_Summative___Breakout
             {
                 if (yDirection.Next(2) == 0)
                 {
-                    _speed = new Vector2(1, -2);
+                    _speed = new Vector2(4, -2);
                     start = true;
                 }
                 else
                 {
-                    _speed = new Vector2(1, 2);
+                    _speed = new Vector2(4, 2);
                     start = true;
                 }
             }
@@ -75,13 +75,29 @@ namespace MonoGame_Summative___Breakout
             if (paddle.Intersects(_location))
             {
                 hitX = true;
+                if (_location.X < paddle._location.X && _speed.X == -4)
+                {
+                    _location.X = paddle._location.X - _location.Width - 4;
+                }
+                if (_location.X < paddle._location.X && _speed.X == 4)
+                {
+                    _location.X = paddle._location.X - _location.Width - 8;
+                }
+                if (_location.X >  paddle._location.X && _speed.X == -4)
+                {
+                    _location.X = paddle._location.X + paddle._location.Width + 8;
+                }
+                if (_location.X > paddle._location.X && _speed.X == 4)
+                {
+                    _location.X = paddle._location.X + paddle._location.Width + 4;
+                }
             }
             if (hitX)
             {
                 _speed.X *= -1;
+                _location.X += (int)_speed.X;
                 hitX = false;
             }
-            _location.X += (int)_speed.X;
 
 
             bool hitY = false;
@@ -102,9 +118,10 @@ namespace MonoGame_Summative___Breakout
             if (hitY)
             {
                 _speed.Y *= -1;
+                _location.Y += (int)_speed.Y;
                 hitY = false;
             }
-            _location.Y += (int)_speed.Y;
+
 
             if (_location.X <= window.X)
             {

@@ -51,6 +51,16 @@ namespace MonoGame_Summative___Breakout
         {
             return _location.Intersects(ball);
         }
+        public Rectangle Rect
+        {
+            get { return _location; }
+            set { _location = value; }
+        }
+        public Vector2 Speed
+        {
+            get { return _speed; }
+            set { _speed = value; }
+        }
     }
 
 }
