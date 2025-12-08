@@ -20,8 +20,8 @@ namespace MonoGame_Summative___Breakout
         Screen screen;
         KeyboardState keyboardState;
         Random generator = new Random();
-        Texture2D blockTexture, paddleTexture, ballTexture, titleScreen;
-        Rectangle window;
+        Texture2D blockTexture, paddleTexture, ballTexture, titleScreen, bottomTexture;
+        Rectangle window, fullWindow;
         List<Block> blocks = new List<Block>();
         Ball ball;
         Paddle paddle;
@@ -36,8 +36,9 @@ namespace MonoGame_Summative___Breakout
         protected override void Initialize()
         {
             window = new Rectangle(0, 0, 800, 500);
-            _graphics.PreferredBackBufferWidth = window.Width;
-            _graphics.PreferredBackBufferHeight = window.Height;
+            fullWindow = new Rectangle(0, 0, 800, 800);
+            _graphics.PreferredBackBufferWidth = fullWindow.Width;
+            _graphics.PreferredBackBufferHeight = fullWindow.Height;
             _graphics.ApplyChanges();
             // TODO: Add your initialization logic here
 
@@ -59,7 +60,8 @@ namespace MonoGame_Summative___Breakout
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            blockTexture = Content.Load<Texture2D>("Images/rectangle (1)");
+            bottomTexture = Content.Load<Texture2D>("Images/rectangle (1)");
+            blockTexture = Content.Load<Texture2D>("Images/blockBase");
             paddleTexture = Content.Load<Texture2D>("Images/paddle");
             ballTexture = Content.Load<Texture2D>("Images/circle (1)");
             titleScreen = Content.Load<Texture2D>("Images/Breakout_OG-logo");
@@ -82,8 +84,10 @@ namespace MonoGame_Summative___Breakout
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.Gray);
             _spriteBatch.Begin();
+            _spriteBatch.Draw(blockTexture, fullWindow, Color.Gray);
+            _spriteBatch.Draw(bottomTexture, window, Color.Black);
             for (int i = 0; i < blocks.Count; i++)
             {
                 blocks[i].Draw(_spriteBatch);
