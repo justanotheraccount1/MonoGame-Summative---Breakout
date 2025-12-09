@@ -20,8 +20,8 @@ namespace MonoGame_Summative___Breakout
         Screen screen;
         KeyboardState keyboardState;
         Random generator = new Random();
-        Texture2D blockTexture, paddleTexture, ballTexture, titleScreen, bottomTexture;
-        Rectangle window, fullWindow;
+        Texture2D blockTexture, paddleTexture, ballTexture, titleScreen, bottomTexture, lavaBG, wallTexture;
+        Rectangle window, fullWindow, gameBG;
         List<Block> blocks = new List<Block>();
         Ball ball;
         Paddle paddle;
@@ -37,6 +37,7 @@ namespace MonoGame_Summative___Breakout
         {
             window = new Rectangle(0, 0, 800, 500);
             fullWindow = new Rectangle(0, 0, 800, 800);
+            gameBG = new Rectangle(0, 0, 800, 1200);
             _graphics.PreferredBackBufferWidth = fullWindow.Width;
             _graphics.PreferredBackBufferHeight = fullWindow.Height;
             _graphics.ApplyChanges();
@@ -50,7 +51,7 @@ namespace MonoGame_Summative___Breakout
                 for (int y = 25; y < window.Height / 2; y += 20)
                 {
                     
-                    blocks.Add(new Block(blockTexture, new Rectangle(x, y, 40, 15)));
+                    blocks.Add(new Block(blockTexture, new Rectangle(x, y, 40, 15), Color.DarkSlateGray));
                 }
             }
             ball = new Ball(ballTexture, new Rectangle(390, 340, 20, 20));
@@ -65,6 +66,8 @@ namespace MonoGame_Summative___Breakout
             paddleTexture = Content.Load<Texture2D>("Images/paddle");
             ballTexture = Content.Load<Texture2D>("Images/circle (1)");
             titleScreen = Content.Load<Texture2D>("Images/Breakout_OG-logo");
+            wallTexture = Content.Load<Texture2D>("Images/bigWall");
+            lavaBG = Content.Load<Texture2D>("Images/lavaBG");
             // TODO: use this.Content to load your game content here
         }
 
@@ -86,8 +89,7 @@ namespace MonoGame_Summative___Breakout
         {
             GraphicsDevice.Clear(Color.Gray);
             _spriteBatch.Begin();
-            _spriteBatch.Draw(blockTexture, fullWindow, Color.Gray);
-            _spriteBatch.Draw(bottomTexture, window, Color.Black);
+            _spriteBatch.Draw(lavaBG, gameBG, Color.White);
             for (int i = 0; i < blocks.Count; i++)
             {
                 blocks[i].Draw(_spriteBatch);

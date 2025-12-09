@@ -38,12 +38,12 @@ namespace MonoGame_Summative___Breakout
             {
                 if (yDirection.Next(2) == 0)
                 {
-                    _speed = new Vector2(-4, -2);
+                    _speed = new Vector2(-4, -3);
                     start = true;
                 }
                 else
                 {
-                    _speed = new Vector2(-4, 2);
+                    _speed = new Vector2(-4, 3);
                     start = true;
                 }
             }
@@ -51,12 +51,12 @@ namespace MonoGame_Summative___Breakout
             {
                 if (yDirection.Next(2) == 0)
                 {
-                    _speed = new Vector2(4, -2);
+                    _speed = new Vector2(4, -3);
                     start = true;
                 }
                 else
                 {
-                    _speed = new Vector2(4, 2);
+                    _speed = new Vector2(4, 3);
                     start = true;
                 }
             }
@@ -75,39 +75,17 @@ namespace MonoGame_Summative___Breakout
             if (paddle.Intersects(_location))
             {
                 hitX = true;
-                if (_location.X < paddle._location.X && paddle._speed.X == 0 )
+                if (_location.X < paddle._location.X)
                 {
-                    _location.X = paddle._location.X - _location.Width - (int)_speed.X;
+                    _location.X = paddle._location.X - _location.Width - 5;
+                    paddle.Speed = Vector2.Zero;
                 }
-                if (_location.X < paddle._location.X && paddle._speed.X < 0 && _speed.X < 0)
+                if (_location.X > paddle._location.X + paddle._location.Width)
                 {
-                    _location.X = paddle._location.X - _location.Width + (int)_speed.X + (int)paddle._speed.X;
-                }
-                if (_location.X < paddle._location.X && paddle._speed.X < 0 && _speed.X > 0)
-                {
-                    _location.X = paddle._location.X - _location.Width - (int)_speed.X + (int)paddle._speed.X;
-                }
-                if (_location.X < paddle._location.X && paddle._speed.X > 0)
-                {
-                    _location.X = paddle._location.X - _location.Width + (int)_speed.X + (int)paddle._speed.X;
+                    _location.X = paddle._location.X + paddle._location.Width + 5;
+                    paddle.Speed = Vector2.Zero;
                 }
 
-                if (_location.X > paddle._location.X && _speed.X == 0)
-                {
-                    _location.X = paddle._location.X + paddle._location.Width - (int)_speed.X;
-                }
-                if (_location.X > paddle._location.X && paddle._speed.X < 0 && _speed.X < 0)
-                {
-                    _location.X = paddle._location.X + paddle._location.Width + (int)_speed.X + (int)paddle._speed.X;
-                }
-                if (_location.X > paddle._location.X && paddle._speed.X < 0 && _speed.X < 0)
-                {
-                    _location.X = paddle._location.X + paddle._location.Width - (int)_speed.X + (int)paddle._speed.X;
-                }
-                if (_location.X > paddle._location.X && paddle._speed.X > 0)
-                {
-                    _location.X = paddle._location.X + paddle._location.Width + (int)_speed.X + (int)paddle._speed.X;
-                }
             }
             if (hitX)
             {
