@@ -74,18 +74,17 @@ namespace MonoGame_Summative___Breakout
             }
             if (paddle.Intersects(_location))
             {
+                if (_location.X + _location.Width < paddle._location.X + paddle._location.Width)
+                {
+                    _location.X = paddle._location.X - _location.Width - 10;
+                    paddle.Speed = Vector2.Zero;
+                }
+                if (_location.X + _location.Width > paddle._location.X + paddle._location.Width)
+                {
+                    _location.X = paddle._location.X + paddle._location.Width + 10;
+                    paddle.Speed = Vector2.Zero;
+                }
                 hitX = true;
-                if (_location.X < paddle._location.X)
-                {
-                    _location.X = paddle._location.X - _location.Width - 5;
-                    paddle.Speed = Vector2.Zero;
-                }
-                if (_location.X > paddle._location.X + paddle._location.Width)
-                {
-                    _location.X = paddle._location.X + paddle._location.Width + 5;
-                    paddle.Speed = Vector2.Zero;
-                }
-
             }
             if (hitX)
             {
@@ -139,7 +138,7 @@ namespace MonoGame_Summative___Breakout
                 _speed.Y *= -1;
             }
 
-           
+
         }
     }
 }
