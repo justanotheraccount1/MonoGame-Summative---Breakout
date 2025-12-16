@@ -16,6 +16,8 @@ namespace MonoGame_Summative___Breakout
         private Random xDirection, yDirection;
         private bool start = false;
         private float _seconds;
+        float _angle;
+        int _health;
 
         public Ball(Texture2D texture, Rectangle location)
         {
@@ -24,16 +26,21 @@ namespace MonoGame_Summative___Breakout
             xDirection = new Random();
             yDirection = new Random();
             _seconds = 0;
+            _angle = 1f;
+            _health = 3;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_texture, _location, Color.White);
+            
+            spriteBatch.Draw(_texture, new Rectangle(_location.X + _location.Width / 2, _location.Y + _location.Height / 2, _location.Width, _location.Height), null, Color.White, (float)Math.PI * _angle, new Vector2(_texture.Width / 2, _texture.Height / 2), SpriteEffects.None, 1f);
+
         }
 
         public void Update(Rectangle window, List<Block> blocks, Paddle paddle, GameTime gameTime)
         {
             _seconds += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            _angle += 0.1f;
             if (xDirection.Next(2)  == 0 && !start)
             {
                 if (yDirection.Next(2) == 0)
@@ -76,12 +83,13 @@ namespace MonoGame_Summative___Breakout
             {
                 if (_location.X + _location.Width < paddle._location.X + paddle._location.Width)
                 {
-                    _location.X = paddle._location.X - _location.Width - 10;
+                    _location.X = paddle._location.X - _location.Width - 10 - (int)_speed.X;
+                    
                     paddle.Speed = Vector2.Zero;
                 }
                 if (_location.X + _location.Width > paddle._location.X + paddle._location.Width)
                 {
-                    _location.X = paddle._location.X + paddle._location.Width + 10;
+                    _location.X = paddle._location.X + paddle._location.Width + 10 - (int)_speed.X;
                     paddle.Speed = Vector2.Zero;
                 }
                 hitX = true;
@@ -132,13 +140,22 @@ namespace MonoGame_Summative___Breakout
                 _location.Y = 0;
                 _speed.Y *= -1;
             }
-            if (_location.Y + _location.Height >= window.Height)
+            if (_location.Y + _location.Height >= window.Height && _health > 0)
             {
                 _location.Y = window.Height - _location.Height;
                 _speed.Y *= -1;
+                _health -= 1;
             }
 
 
+        }
+        public int Health
+        {
+            get { return _health; }
+        }
+        public Rectangle Rect
+        {
+            get { return _location; }
         }
     }
 }

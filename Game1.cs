@@ -20,8 +20,8 @@ namespace MonoGame_Summative___Breakout
         Screen screen;
         KeyboardState keyboardState;
         Random generator = new Random();
-        Texture2D blockTexture, paddleTexture, ballTexture, titleScreen, bottomTexture, lavaBG, wallTexture;
-        Rectangle window, fullWindow, gameBG;
+        Texture2D blockTexture, paddleTexture, ballTexture, titleScreen, bottomTexture, lavaBG, wallTexture, breakingTexture, bowserTexture;
+        Rectangle window, fullWindow, gameBG, wallRect;
         List<Block> blocks = new List<Block>();
         Ball ball;
         Paddle paddle;
@@ -38,13 +38,12 @@ namespace MonoGame_Summative___Breakout
             window = new Rectangle(0, 0, 800, 500);
             fullWindow = new Rectangle(0, 0, 800, 800);
             gameBG = new Rectangle(0, 0, 800, 1200);
+            wallRect = new Rectangle(0, 500, 800, 50);
             _graphics.PreferredBackBufferWidth = fullWindow.Width;
             _graphics.PreferredBackBufferHeight = fullWindow.Height;
             _graphics.ApplyChanges();
             // TODO: Add your initialization logic here
-
             Color brickColor;
-
             base.Initialize();
             for (int x = 62; x < window.Width - 100; x += 45)
             {
@@ -63,8 +62,10 @@ namespace MonoGame_Summative___Breakout
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             bottomTexture = Content.Load<Texture2D>("Images/rectangle (1)");
             blockTexture = Content.Load<Texture2D>("Images/blockBase");
+            bowserTexture = Content.Load<Texture2D>("Images/bowser");
+            breakingTexture = Content.Load<Texture2D>("Images/breakingTexture");
             paddleTexture = Content.Load<Texture2D>("Images/paddle");
-            ballTexture = Content.Load<Texture2D>("Images/circle (1)");
+            ballTexture = Content.Load<Texture2D>("Images/Retro Fire Ball");
             titleScreen = Content.Load<Texture2D>("Images/Breakout_OG-logo");
             wallTexture = Content.Load<Texture2D>("Images/bigWall");
             lavaBG = Content.Load<Texture2D>("Images/lavaBG");
@@ -76,9 +77,18 @@ namespace MonoGame_Summative___Breakout
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             keyboardState = Keyboard.GetState();
-            ball.Update(window, blocks, paddle, gameTime);
-            paddle.Update(keyboardState, window);
-
+            if (screen == Screen.Title)
+            {
+                if (keyboardState.IsKeyDown(Keys.Enter))
+                {
+                    screen = Screen.Game;
+                }
+            }
+            if (screen == Screen.Game)
+            {
+                ball.Update(window, blocks, paddle, gameTime);
+                paddle.Update(keyboardState, window);
+            }
 
             // TODO: Add your update logic here
 
@@ -89,13 +99,33 @@ namespace MonoGame_Summative___Breakout
         {
             GraphicsDevice.Clear(Color.Gray);
             _spriteBatch.Begin();
-            _spriteBatch.Draw(lavaBG, gameBG, Color.White);
-            for (int i = 0; i < blocks.Count; i++)
+            if (screen == Screen.Title)
             {
-                blocks[i].Draw(_spriteBatch);
+                _spriteBatch.Draw(titleScreen, fullWindow, Color.Red);
+                _spriteBatch.Draw(bowserTexture, new Rectangle(240, 160, 400, 200), Color.Red);
             }
-            paddle.Draw(_spriteBatch);
-            ball.Draw(_spriteBatch);
+            if (screen == Screen.Game)
+            {
+                _spriteBatch.Draw(lavaBG, gameBG, Color.White);
+                for (int i = 0; i < blocks.Count; i++)
+                {
+                    blocks[i].Draw(_spriteBatch);
+                }
+                paddle.Draw(_spriteBatch);
+                ball.Draw(_spriteBatch);
+                if (ball.Health > 0)
+                {
+                    _spriteBatch.Draw(wallTexture, wallRect, Color.White);
+                }
+                if (ball.Health == 1)
+                {
+                    for (int x = 0; x < window.Width; x += wallRect.Height + 2)
+                    {
+                        _spriteBatch.Draw(breakingTexture, new Rectangle(x, wallRect.Y, wallRect.Height, wallRect.Height), Color.White);
+                    }
+                }
+            }
+            
             _spriteBatch.End();
             // TODO: Add your drawing code here
 
