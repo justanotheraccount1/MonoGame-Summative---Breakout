@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -20,11 +21,14 @@ namespace MonoGame_Summative___Breakout
         Screen screen;
         KeyboardState keyboardState;
         Random generator = new Random();
-        Texture2D blockTexture, paddleTexture, ballTexture, titleScreen, bottomTexture, lavaBG, wallTexture, breakingTexture, bowserTexture;
+        Texture2D blockTexture, paddleTexture, ballTexture, titleScreen, bottomTexture, lavaBG, wallTexture, breakingTexture, bowserTexture, loseScreen, winScreen;
         Rectangle window, fullWindow, gameBG, wallRect;
         List<Block> blocks = new List<Block>();
         Ball ball;
         Paddle paddle;
+        SoundEffect wallHit;
+        SoundEffectInstance wallHitInstance;
+        SpriteFont textFont;
 
         public Game1()
         {
@@ -68,7 +72,12 @@ namespace MonoGame_Summative___Breakout
             ballTexture = Content.Load<Texture2D>("Images/Retro Fire Ball");
             titleScreen = Content.Load<Texture2D>("Images/Breakout_OG-logo");
             wallTexture = Content.Load<Texture2D>("Images/bigWall");
+            loseScreen = Content.Load<Texture2D>("Images/BowserFury");
+            winScreen = Content.Load<Texture2D>("Images/winScreen");
             lavaBG = Content.Load<Texture2D>("Images/lavaBG");
+            wallHit = Content.Load<SoundEffect>("Sounds/Thud");
+            wallHitInstance = wallHit.CreateInstance();
+            textFont = Content.Load<SpriteFont>("Fonts/gameFont");
             // TODO: use this.Content to load your game content here
         }
 
@@ -86,8 +95,16 @@ namespace MonoGame_Summative___Breakout
             }
             if (screen == Screen.Game)
             {
-                ball.Update(window, blocks, paddle, gameTime);
+                ball.Update(window, blocks, paddle, gameTime, wallHitInstance);
                 paddle.Update(keyboardState, window);
+                if (!fullWindow.Contains(ball.Rect))
+                {
+                    screen = Screen.Lose;
+                }
+                if (blocks.Count == 0)
+                {
+                    screen = Screen.Win;
+                }
             }
 
             // TODO: Add your update logic here
@@ -97,7 +114,7 @@ namespace MonoGame_Summative___Breakout
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Gray);
+            GraphicsDevice.Clear(Color.DarkRed);
             _spriteBatch.Begin();
             if (screen == Screen.Title)
             {
@@ -106,7 +123,7 @@ namespace MonoGame_Summative___Breakout
             }
             if (screen == Screen.Game)
             {
-                _spriteBatch.Draw(lavaBG, gameBG, Color.White);
+                _spriteBatch.Draw(lavaBG, gameBG, Color.Gray);
                 for (int i = 0; i < blocks.Count; i++)
                 {
                     blocks[i].Draw(_spriteBatch);
@@ -125,8 +142,16 @@ namespace MonoGame_Summative___Breakout
                     }
                 }
             }
-            
-            _spriteBatch.End();
+            if (screen == Screen.Lose)
+            {
+                _spriteBatch.Draw(loseScreen, fullWindow, Color.DarkRed);
+                _spriteBatch.DrawString(textFont, "You Lose", new Vector2(200, 450), Color.Red);
+            }
+            if (screen == Screen.Lose)
+            {
+                _spriteBatch.Draw(winScreen, fullWindow, Color.White);
+            }
+                _spriteBatch.End();
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);

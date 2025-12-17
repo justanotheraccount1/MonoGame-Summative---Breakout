@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace MonoGame_Summative___Breakout
         private Texture2D _texture;
         private Rectangle _location;
         private Vector2 _speed;
-        private Random xDirection, yDirection;
+        private Random _direction;
         private bool start = false;
         private float _seconds;
         float _angle;
@@ -23,8 +24,8 @@ namespace MonoGame_Summative___Breakout
         {
             _texture = texture;
             _location = location;
-            xDirection = new Random();
-            yDirection = new Random();
+            _direction = new Random();
+
             _seconds = 0;
             _angle = 1f;
             _health = 3;
@@ -37,13 +38,13 @@ namespace MonoGame_Summative___Breakout
 
         }
 
-        public void Update(Rectangle window, List<Block> blocks, Paddle paddle, GameTime gameTime)
+        public void Update(Rectangle window, List<Block> blocks, Paddle paddle, GameTime gameTime, SoundEffectInstance wallHit)
         {
             _seconds += (float)gameTime.ElapsedGameTime.TotalSeconds;
             _angle += 0.1f;
-            if (xDirection.Next(2)  == 0 && !start)
+            if (_direction.Next(2)  == 0 && !start)
             {
-                if (yDirection.Next(2) == 0)
+                if (_direction.Next(2) == 0)
                 {
                     _speed = new Vector2(-4, -3);
                     start = true;
@@ -54,9 +55,9 @@ namespace MonoGame_Summative___Breakout
                     start = true;
                 }
             }
-            else if (xDirection.Next(2) == 1 && !start)
+            else if (_direction.Next(2) == 1 && !start)
             {
-                if (yDirection.Next(2) == 0)
+                if (_direction.Next(2) == 0)
                 {
                     _speed = new Vector2(4, -3);
                     start = true;
@@ -145,6 +146,7 @@ namespace MonoGame_Summative___Breakout
                 _location.Y = window.Height - _location.Height;
                 _speed.Y *= -1;
                 _health -= 1;
+                wallHit.Play();
             }
 
 
