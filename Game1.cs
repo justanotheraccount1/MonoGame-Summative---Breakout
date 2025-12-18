@@ -26,8 +26,8 @@ namespace MonoGame_Summative___Breakout
         List<Block> blocks = new List<Block>();
         Ball ball;
         Paddle paddle;
-        SoundEffect wallHit;
-        SoundEffectInstance wallHitInstance;
+        SoundEffect wallHit, blockHit, paddleHit, winSound, introSound, gameSound, loseSound;
+        SoundEffectInstance wallHitInstance, blockHitInstance, paddleHitInstance, winSoundInstance, introSoundInstance, gameSoundInstance, loseSoundInstance;
         SpriteFont textFont;
 
         public Game1()
@@ -77,6 +77,16 @@ namespace MonoGame_Summative___Breakout
             lavaBG = Content.Load<Texture2D>("Images/lavaBG");
             wallHit = Content.Load<SoundEffect>("Sounds/Thud");
             wallHitInstance = wallHit.CreateInstance();
+            gameSound = Content.Load<SoundEffect>("Sounds/bossBattle");
+            gameSoundInstance = gameSound.CreateInstance();
+            gameSoundInstance.IsLooped = true;
+            introSound = Content.Load<SoundEffect>("Sounds/introSong");
+            introSoundInstance = introSound.CreateInstance();
+            introSoundInstance.IsLooped = true;
+            winSound = Content.Load<SoundEffect>("Sounds/WIN");
+            winSoundInstance = winSound.CreateInstance();
+            loseSound = Content.Load<SoundEffect>("Sounds/lOSE");
+            loseSoundInstance = loseSound.CreateInstance();
             textFont = Content.Load<SpriteFont>("Fonts/gameFont");
             // TODO: use this.Content to load your game content here
         }
@@ -88,6 +98,7 @@ namespace MonoGame_Summative___Breakout
             keyboardState = Keyboard.GetState();
             if (screen == Screen.Title)
             {
+                introSoundInstance.Play();
                 if (keyboardState.IsKeyDown(Keys.Enter))
                 {
                     screen = Screen.Game;
@@ -95,6 +106,8 @@ namespace MonoGame_Summative___Breakout
             }
             if (screen == Screen.Game)
             {
+                introSoundInstance.Stop();
+                gameSoundInstance.Play();
                 ball.Update(window, blocks, paddle, gameTime, wallHitInstance);
                 paddle.Update(keyboardState, window);
                 if (!fullWindow.Contains(ball.Rect))
@@ -105,6 +118,18 @@ namespace MonoGame_Summative___Breakout
                 {
                     screen = Screen.Win;
                 }
+            }
+            if (screen == Screen.Win)
+            {
+                introSoundInstance.Stop();
+                gameSoundInstance.Stop();
+                winSoundInstance.Play();
+            }
+            if (screen == Screen.Lose)
+            {
+                introSoundInstance.Stop();
+                gameSoundInstance.Stop();
+                loseSoundInstance.Play();
             }
 
             // TODO: Add your update logic here
@@ -120,6 +145,7 @@ namespace MonoGame_Summative___Breakout
             {
                 _spriteBatch.Draw(titleScreen, fullWindow, Color.Red);
                 _spriteBatch.Draw(bowserTexture, new Rectangle(240, 160, 400, 200), Color.Red);
+                _spriteBatch.DrawString(textFont, "Hit Enter", new Vector2(200, 675), Color.Red);
             }
             if (screen == Screen.Game)
             {
@@ -147,7 +173,7 @@ namespace MonoGame_Summative___Breakout
                 _spriteBatch.Draw(loseScreen, fullWindow, Color.DarkRed);
                 _spriteBatch.DrawString(textFont, "You Lose", new Vector2(200, 450), Color.Red);
             }
-            if (screen == Screen.Lose)
+            if (screen == Screen.Win)
             {
                 _spriteBatch.Draw(winScreen, fullWindow, Color.White);
             }

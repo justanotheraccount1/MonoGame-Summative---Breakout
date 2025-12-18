@@ -167,9 +167,39 @@
 /processorParam:TextureFormat=Color
 /build:Images/winScreen.png
 
+#begin Sounds/bossBattle.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/bossBattle.mp3
+
+#begin Sounds/hitSound.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/hitSound.mp3
+
+#begin Sounds/introSong.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/introSong.mp3
+
+#begin Sounds/LOSE.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/LOSE.mp3
+
 #begin Sounds/Thud.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Sounds/Thud.mp3
+
+#begin Sounds/WIN.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/WIN.mp3
 
