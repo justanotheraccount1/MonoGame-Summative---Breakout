@@ -26,8 +26,8 @@ namespace MonoGame_Summative___Breakout
         List<Block> blocks = new List<Block>();
         Ball ball;
         Paddle paddle;
-        SoundEffect wallHit, blockHit, paddleHit, winSound, introSound, gameSound, loseSound;
-        SoundEffectInstance wallHitInstance, blockHitInstance, paddleHitInstance, winSoundInstance, introSoundInstance, gameSoundInstance, loseSoundInstance;
+        SoundEffect wallHit, paddleHit, winSound, introSound, gameSound, loseSound;
+        SoundEffectInstance wallHitInstance, winSoundInstance, introSoundInstance, gameSoundInstance, loseSoundInstance;
         SpriteFont textFont;
 
         public Game1()
@@ -85,8 +85,9 @@ namespace MonoGame_Summative___Breakout
             introSoundInstance.IsLooped = true;
             winSound = Content.Load<SoundEffect>("Sounds/WIN");
             winSoundInstance = winSound.CreateInstance();
-            loseSound = Content.Load<SoundEffect>("Sounds/lOSE");
+            loseSound = Content.Load<SoundEffect>("Sounds/LOSE");
             loseSoundInstance = loseSound.CreateInstance();
+            paddleHit = Content.Load<SoundEffect>("Sounds/hitSound");
             textFont = Content.Load<SpriteFont>("Fonts/gameFont");
             // TODO: use this.Content to load your game content here
         }
@@ -108,7 +109,7 @@ namespace MonoGame_Summative___Breakout
             {
                 introSoundInstance.Stop();
                 gameSoundInstance.Play();
-                ball.Update(window, blocks, paddle, gameTime, wallHitInstance);
+                ball.Update(window, blocks, paddle, gameTime, wallHitInstance, paddleHit);
                 paddle.Update(keyboardState, window);
                 if (!fullWindow.Contains(ball.Rect))
                 {

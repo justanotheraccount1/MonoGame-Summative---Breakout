@@ -38,7 +38,7 @@ namespace MonoGame_Summative___Breakout
 
         }
 
-        public void Update(Rectangle window, List<Block> blocks, Paddle paddle, GameTime gameTime, SoundEffectInstance wallHit)
+        public void Update(Rectangle window, List<Block> blocks, Paddle paddle, GameTime gameTime, SoundEffectInstance wallHit, SoundEffect paddleHit)
         {
             _seconds += (float)gameTime.ElapsedGameTime.TotalSeconds;
             _angle += 0.1f;
@@ -97,6 +97,7 @@ namespace MonoGame_Summative___Breakout
             }
             if (hitX)
             {
+                paddleHit.Play();
                 _speed.X *= -1;
                 _location.X += (int)_speed.X;
                 hitX = false;
@@ -120,6 +121,7 @@ namespace MonoGame_Summative___Breakout
             }
             if (hitY)
             {
+                paddleHit.Play();
                 _speed.Y *= -1;
                 _location.Y += (int)_speed.Y;
                 hitY = false;
@@ -128,21 +130,25 @@ namespace MonoGame_Summative___Breakout
 
             if (_location.X <= window.X)
             {
+                paddleHit.Play();
                 _location.X = 0;
                 _speed.X *= -1;
             }
             if (_location.X + _location.Width >= window.Width)
             {
+                paddleHit.Play();
                 _location.X = window.Width - _location.Width;
                 _speed.X *= -1;
             }
             if (_location.Y <= window.Y)
             {
+                paddleHit.Play();
                 _location.Y = 0;
                 _speed.Y *= -1;
             }
             if (_location.Y + _location.Height >= window.Height && _health > 0)
             {
+                paddleHit.Play();
                 _location.Y = window.Height - _location.Height;
                 _speed.Y *= -1;
                 _health -= 1;
